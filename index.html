@@ -4,44 +4,51 @@
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   </head>
   <body>
-    <h1>Revolutions</h1>
+    <header>
+      <h1>Revolutions</h1>
+      by @sanjaypojo
+    </header>
     <br>
     <div id="solar-system">
       <svg id="svg-canvas"></svg>
     </div>
   </body>
   <script>
+    d3.select("body").style("background-color", "#333").style("color", "white");
+    d3.select("header").style("position", "fixed");
     var planets = [
-    {name:"Mercury", size: 0.38, radius: 1},
-    {name:"Venus", size: 0.95, radius: 2},
-    {name:"Earth", size: 1, radius: 3},
-    {name:"Mars", size: 0.53, radius: 4},
-    {name:"Jupiter", size: 11.19, radius: 5},
-    {name:"Saturn", size: 9.4, radius: 6},
-    {name:"Uranus", size: 4.04, radius: 7},
-    {name:"Neptune", size: 3.88, radius: 8},
-    {name:"Pluto", size: 0.18, radius: 9}
+    {name:"Mercury", size: 0.38, radius: 1, period: 0.241},
+    {name:"Venus", size: 0.95, radius: 2, period: 0.615},
+    {name:"Earth", size: 1, radius: 3, period: 1},
+    {name:"Mars", size: 0.53, radius: 4, period: 1.88},
+    {name:"Jupiter", size: 11.19, radius: 5, period: 11.9},
+    {name:"Saturn", size: 9.4, radius: 6, period: 29.5},
+    {name:"Uranus", size: 4.04, radius: 7, period: 84},
+    {name:"Neptune", size: 3.88, radius: 8, period: 165},
+    {name:"Pluto", size: 0.18, radius: 9, period: 248}
     ];
     var pallete = d3.scale.category10().range();
-    var svgFrame = d3.select("#svg-canvas").style("height", "500px")
+    var svgFrame = d3.select("#svg-canvas").style("height", "1000px")
       .style("width", "1200px").style("background-color", "#333");
     svgFrame.selectAll('circle').data(planets).enter().append('circle')
-      .attr("cx", function(d,i) {return d.radius*75;})
-      .attr("cy", 200)
+      .attr("cx",0)
+      .attr("cy", 0)
       .attr("r", function(d) {return Math.log(d.size*10)*5;})
       .style("fill", function(d, i) {return pallete[i];})
+    svgFrame.selectAll('ellipse').data(planets).enter().append('ellipse')
+      .attr("cx", 600)
+      .attr("cy", 500)
+      .attr("rx", function(d) {return d.radius*50;})
+      .attr("ry", function(d) {return d.radius*50;})
+      .style("stroke", "#000").style("fill", "none");
     var ctr = 0;
     d3.timer(function(e) {
       ctr += 1;
-      if (ctr > 1000) {
-        ctr = ctr%1000;
-      }
-      var ctrNormalized = 2*Math.PI*ctr/1000;
       svgFrame.selectAll("circle").attr("cx", function(d) {
-        return 600 + d.radius * 50 * Math.cos(ctrNormalized);
+        return 600 + d.radius * 50 * Math.cos((ctr/(d.period*500))%(2*Math.PI));
       }).attr("cy", function(d) {
-        return 250 + d.radius * 50 * Math.sin(ctrNormalized);
-      });
+        return 500 + d.radius * 50 * Math.sin((ctr/(d.period*500))%(2*Math.PI));
+      })
       return false;
     });
   </script>
