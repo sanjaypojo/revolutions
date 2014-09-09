@@ -43,7 +43,7 @@
       .style("stroke", "#000").style("fill", "none");
     var ctr = 0;
     d3.timer(function(e) {
-      ctr += 1;
+      ctr += 20;
       svgFrame.selectAll("circle").attr("cx", function(d) {
         return 600 + d.radius * 50 * Math.cos((ctr/(d.period*500))%(2*Math.PI));
       }).attr("cy", function(d) {
