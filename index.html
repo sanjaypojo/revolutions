@@ -1,8 +1,48 @@
 <html>
   <head>
     <title>Hello</title>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   </head>
   <body>
-    Yo
+    <h1>Revolutions</h1>
+    <br>
+    <div id="solar-system">
+      <svg id="svg-canvas"></svg>
+    </div>
   </body>
+  <script>
+    var planets = [
+    {name:"Mercury", size: 0.38, radius: 1},
+    {name:"Venus", size: 0.95, radius: 2},
+    {name:"Earth", size: 1, radius: 3},
+    {name:"Mars", size: 0.53, radius: 4},
+    {name:"Jupiter", size: 11.19, radius: 5},
+    {name:"Saturn", size: 9.4, radius: 6},
+    {name:"Uranus", size: 4.04, radius: 7},
+    {name:"Neptune", size: 3.88, radius: 8},
+    {name:"Pluto", size: 0.18, radius: 9}
+    ];
+    var pallete = d3.scale.category10().range();
+    var svgFrame = d3.select("#svg-canvas").style("height", "500px")
+      .style("width", "1200px").style("background-color", "#333");
+    svgFrame.selectAll('circle').data(planets).enter().append('circle')
+      .attr("cx", function(d,i) {return d.radius*75;})
+      .attr("cy", 200)
+      .attr("r", function(d) {return Math.log(d.size*10)*5;})
+      .style("fill", function(d, i) {return pallete[i];})
+    var ctr = 0;
+    d3.timer(function(e) {
+      ctr += 1;
+      if (ctr > 1000) {
+        ctr = ctr%1000;
+      }
+      var ctrNormalized = 2*Math.PI*ctr/1000;
+      svgFrame.selectAll("circle").attr("cx", function(d) {
+        return 600 + d.radius * 50 * Math.cos(ctrNormalized);
+      }).attr("cy", function(d) {
+        return 250 + d.radius * 50 * Math.sin(ctrNormalized);
+      });
+      return false;
+    });
+  </script>
 </html>
