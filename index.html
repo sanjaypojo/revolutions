@@ -1,6 +1,12 @@
 <html>
   <head>
-    <title>Hello</title>
+    <title>Revolutions by @sanjaypojo</title>
+    <style>
+      body {background-color: #333; color: #fff;}
+      header {position: fixed; font-family: helvetica, times, sans-serif; padding-left: 10px;}
+      h1 {margin-bottom: 5px; margin-left: -5px;}
+      #svg-canvas {background-color: #333;}
+    </style>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   </head>
   <body>
@@ -14,8 +20,6 @@
     </div>
   </body>
   <script>
-    d3.select("body").style("background-color", "#333").style("color", "white");
-    d3.select("header").style("position", "fixed");
     var planets = [
     {name:"Mercury", size: 0.38, radius: 1, period: 0.241},
     {name:"Venus", size: 0.95, radius: 2, period: 0.615},
@@ -29,7 +33,7 @@
     ];
     var pallete = d3.scale.category10().range();
     var svgFrame = d3.select("#svg-canvas").style("height", "1000px")
-      .style("width", "1200px").style("background-color", "#333");
+      .style("width", "1200px");
     svgFrame.selectAll('ellipse').data(planets).enter().append('ellipse')
       .attr("cx", 600)
       .attr("cy", 500)
